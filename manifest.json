@@ -1,0 +1,9 @@
+{
+  "id": "annotation-syncer",
+  "name": "Annotation Syncer",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "YouTube video bookmarks synced with markdown annotations",
+  "author": "egriff38",
+  "isDesktopOnly": true
+}

@@ -1,0 +1,28 @@
+{
+  "name": "obsidian-annotation-syncer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx esbuild.config.mts --dev",
+    "build": "tsx esbuild.config.mts --production",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "effect": "4.0.0-beta.30"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "msgpackr-extract"]
+  },
+  "devDependencies": {
+    "@codemirror/state": "6.5.0",
+    "@codemirror/view": "6.38.6",
+    "@effect/vitest": "4.0.0-beta.30",
+    "esbuild": "^0.27.0",
+    "obsidian": "^1.6.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  }
+}
