@@ -72,6 +72,29 @@ __tests__/                      # Vitest tests mirroring src structure
 - **[esbuild](https://esbuild.github.io)** — fast bundler producing the CJS output Obsidian requires
 - **[Vitest](https://vitest.dev)** — unit and integration tests
 
+## Beta Testing with BRAT
+
+[BRAT](https://github.com/TfTHacker/obsidian42-brat) (Beta Reviewers Auto-update Tester) lets users install this plugin directly from GitHub without waiting for the Community Plugins directory.
+
+**For testers:**
+
+1. Install BRAT from the Community Plugins directory.
+2. In BRAT settings → "Add beta plugin" → enter `egriff38/obsidian-annotation-syncer`.
+3. BRAT will install the latest release and notify you of future updates.
+
+**For maintainers — cutting a release:**
+
+1. Update `version` in both `manifest.json` and `package.json` to the new version (e.g. `0.2.0`).
+2. Commit: `git commit -am "chore: release 0.2.0"`
+3. Tag with the exact version string (no `v` prefix — BRAT requires this):
+   ```bash
+   git tag 0.2.0
+   git push origin main --tags
+   ```
+4. The [release workflow](.github/workflows/release.yml) fires automatically, builds the plugin, and attaches `main.js` + `manifest.json` to the GitHub Release.
+
+BRAT users receive the update the next time they check for updates.
+
 ## License
 
 MIT
