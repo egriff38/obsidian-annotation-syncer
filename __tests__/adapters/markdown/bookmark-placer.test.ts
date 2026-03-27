@@ -72,6 +72,74 @@ describe("computePlacement", () => {
       expect(result.text).toMatch(/## \[2:00\]/);
       expect(result.text).toMatch(/\n\n$/);
     });
+
+    it("appends heading after the previous section content", () => {
+      const result = place(
+        [
+          "# Video Notes",
+          "",
+          "### [0:10](https://youtube.com/watch?v=abc&t=10) Intro",
+          "Some notes about the intro",
+          "",
+          "- Detail",
+        ].join("\n"),
+        120,
+      );
+
+      expect(result.line).toBe(6);
+      expect(result.text).toMatch(/### \[2:00\]/);
+    });
+
+    it("inserts between sibling headings based on chronology", () => {
+      const result = place(
+        [
+          "# Video Notes",
+          "",
+          "### [0:10](https://youtube.com/watch?v=abc&t=10) Intro",
+          "Some notes about the intro",
+          "",
+          "### [1:30](https://youtube.com/watch?v=abc&t=90) Main Topic",
+          "Notes about main topic",
+        ].join("\n"),
+        45,
+      );
+
+      expect(result.line).toBe(5);
+      expect(result.text).toMatch(/^### \[0:45\]/);
+    });
+
+    it("stops before the next higher-level heading", () => {
+      const result = place(
+        [
+          "# Video Notes",
+          "",
+          "### [0:10](https://youtube.com/watch?v=abc&t=10) Intro",
+          "Some notes about the intro",
+          "",
+          "## Wrap Up",
+        ].join("\n"),
+        120,
+      );
+
+      expect(result.line).toBe(5);
+      expect(result.text).toMatch(/### \[2:00\]/);
+    });
+
+    it("stops before a thematic break", () => {
+      const result = place(
+        [
+          "### [0:10](https://youtube.com/watch?v=abc&t=10) Intro",
+          "Some notes about the intro",
+          "",
+          "---",
+          "## Wrap Up",
+        ].join("\n"),
+        120,
+      );
+
+      expect(result.line).toBe(3);
+      expect(result.text).toMatch(/### \[2:00\]/);
+    });
   });
 
   describe("interstitial non-timestamped sections", () => {

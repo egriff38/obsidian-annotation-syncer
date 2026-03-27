@@ -26,6 +26,27 @@ function headingLevel(line: string): number {
   return match ? match[1]!.length : 0;
 }
 
+function isSectionBoundary(line: string, currentLevel: number): boolean {
+  if (/^\s*---+\s*$/.test(line)) return true;
+
+  const level = headingLevel(line);
+  return level > 0 && level <= currentLevel;
+}
+
+function findHeadingSectionEnd(
+  lines: string[],
+  startLine: number,
+  level: number,
+): number {
+  for (let lineIdx = startLine + 1; lineIdx < lines.length; lineIdx++) {
+    if (isSectionBoundary(lines[lineIdx]!, level)) {
+      return lineIdx;
+    }
+  }
+
+  return lines.length;
+}
+
 function listPrefix(line: string): string {
   const match = line.match(/^(\s*[-*+]\s)/);
   return match ? match[1]! : "- ";
@@ -137,6 +158,7 @@ function placeBelow(
   switch (style) {
     case "heading": {
       const level = headingLevel(refLine);
+      const insertLine = findHeadingSectionEnd(lines, lastEntryLine, level);
       const prefix = "#".repeat(level) + " ";
       const text = `\n${prefix}${mdLink}\n\n`;
       return {
